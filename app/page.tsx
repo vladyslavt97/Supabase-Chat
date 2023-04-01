@@ -12,7 +12,7 @@ export default async function Home() {
         title: item.title,
     }))
   return (
-    <main>
+    <main className='overflow-hidden'>
       <Chat serverMessages={serverMessages ?? []}/>
       <Input/>
     </main>
