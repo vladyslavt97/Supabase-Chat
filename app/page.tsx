@@ -13,10 +13,8 @@ export default async function Home() {
     }))
 
   return (
-    <main className="bg-black w-full overflow-scroll">
-      <div className='flex justify-center items-center'>
-        <Chat serverMessages={serverMessages ?? []}/>
-      </div>
+    <main>
+      <Chat serverMessages={serverMessages ?? []}/>
       <Input/>
     </main>
   )
