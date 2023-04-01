@@ -17,8 +17,8 @@ export default function Input({}: Props) {
 
   return (
     <form className="fixed bottom-0 left-0 flex flex-row h-[8vh]" onSubmit={insertTitle}>
-        <input type="text" className=" bg-white w-[80vw] text-black" placeholder='message' onChange={e=>setTitle(e.target.value)} value={title}/>
-        <button className="bg-gray-300 text-center w-[20vw] text-black">send</button>
+        <input type="text" className=" bg-blue-100 w-[80vw] text-blue-900" placeholder='message' onChange={e=>setTitle(e.target.value)} value={title}/>
+        <button className="bg-blue-300 text-center w-[20vw] text-blue-900">send</button>
     </form>
   )
 }
