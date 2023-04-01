@@ -105,3 +105,16 @@ a {
     color-scheme: dark;
   }
 }
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.shadow{
+  box-shadow: 0px 0px 30px #0077ff;
+}
+
+.text{
+  font-size: 6px;
+}
