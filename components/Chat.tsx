@@ -9,7 +9,7 @@ type Message = {
 };
 
 export default function Chat({serverMessages}: {serverMessages: Message[]}) {
-const [chat, setChat] = useState(serverMessages.reverse());
+const [chat, setChat] = useState(serverMessages);
   useEffect(()=>{
     const channel = supabase.channel('realtime chats').on('postgres_changes',
       {
