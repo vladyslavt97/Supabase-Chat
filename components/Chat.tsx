@@ -1,7 +1,6 @@
 "use client"
 import supabase from "@/utils/supabase";
 import { useEffect, useState } from "react";
-import { MutatingDots } from  'react-loader-spinner'
 type Message = {
   id: string;
   created_at: string;
@@ -9,14 +8,15 @@ type Message = {
 };
 
 export default function Chat({serverMessages}: {serverMessages: Message[]}) {
-const [chat, setChat] = useState(serverMessages);
+const [chat, setChat] = useState(serverMessages.reverse());
   useEffect(()=>{
     const channel = supabase.channel('realtime chats').on('postgres_changes',
       {
         event: "INSERT", schema: "public", table: "chats"
       }, (payload) => {
         console.log({payload});
-        setChat([...chat, payload.new as Message])
+        // setChat([...chat, payload.new as Message])
+        setChat([payload.new as Message, ...chat])
       }).subscribe()
 
       return () => {
@@ -32,27 +32,15 @@ const dataFormating = (dateToFormat: any) => {
 
 return (
   <>
-    {chat.length === 0 ? <MutatingDots 
-    height="100"
-    width="100"
-    color="#4fa94d"
-    secondaryColor= '#4fa94d'
-    radius='12.5'
-    ariaLabel="mutating-dots-loading"
-    wrapperStyle={{}}
-    wrapperClass=""
-    visible={true}
-    /> 
-    : 
-    <div className="flex flex-col-reverse justify-end items-end right-0 relative gap-2 overflow-y-scroll bottom-20 p-2">
-      {chat.reverse().map(el => (
-        <div key={el.id} className="rounded-xl bg-blue-600 px-1 py-1 max-w-[40%] text-center shadow flex flex-row justify-end flex-wrap">
+   
+    <div className="flex flex-col-reverse justify-end items-center right-0 relative gap-2 overflow-y-scroll bottom-20 p-2">
+      {chat.map(el => (
+        <div key={el.id} className="rounded-xl bg-blue-600 px-1 py-1 max-w-[40%] text-center shadow flex flex-row justify-end flex-wrap m-1">
           <h1 className="w-96 text-xs text-blue-300 ">{el.title}</h1>
           <h5 className="text text-white">{dataFormating(el.created_at)}</h5>
         </div>
       ))}
     </div>
-    }
   </>
 );
 
