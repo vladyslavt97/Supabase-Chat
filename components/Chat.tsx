@@ -1,6 +1,7 @@
 "use client"
 import supabase from "@/utils/supabase";
 import { useEffect, useState } from "react";
+
 type Message = {
   id: string;
   created_at: string;
@@ -31,7 +32,7 @@ const dataFormating = (dateToFormat: any) => {
 }
 
 return (
-    <div className="flex flex-col-reverse items-center gap-2 p-2 h-[90vh]">
+    <div className="flex flex-col-reverse overflow-auto items-center gap-2 p-2 h-[92vh] w-screen">
       {chat.map(el => (
         <div key={el.id} className="rounded-xl bg-blue-600 px-1 py-1 max-w-[40%] text-center shadow flex flex-row justify-end flex-wrap m-1">
           <h1 className="w-96 text-xs text-blue-300 ">{el.title}</h1>
