@@ -1,6 +1,7 @@
 "use client"
 import supabase from "@/utils/supabase";
 import { useEffect, useState } from "react";
+import DeleteBtn from "./DeleteBtn";
 
 type Message = {
   id: string;
@@ -13,11 +14,22 @@ const [chat, setChat] = useState(serverMessages);
   useEffect(()=>{
     const channel = supabase.channel('realtime chats').on('postgres_changes',
       {
-        event: "INSERT", schema: "public", table: "chats"
+        event: "*", schema: "public", table: "chats"
       }, (payload) => {
         console.log({payload});
         // setChat([...chat, payload.new as Message])
+        if(payload.eventType === "INSERT"){
         setChat([payload.new as Message, ...chat])
+        } else {
+          console.log('chat', chat);
+          
+          const filtered = chat.filter(el => {
+            return el.id !== payload.old.id
+          })
+          console.log('filtered', filtered);
+          
+          setChat(filtered)
+        }
       }).subscribe()
 
       return () => {
@@ -37,7 +49,8 @@ return (
 
     <div className="flex flex-col-reverse overflow-auto items-center gap-2 p-2 pb-5 h-[80vh] w-screen bg-blue-900 border-b-orange-400 border-2">
       {chat.map(el => (
-        <div key={el.id} className="rounded-xl bg-blue-600 px-1 py-1 max-w-[40%] text-center shadow flex flex-row justify-end flex-wrap m-1">
+        <div key={el.id} className="rounded-xl bg-blue-600 px-1 py-1 max-w-[40%] text-center shadow flex flex-row justify-end items-center flex-wrap m-1">
+          <DeleteBtn id={el.id}/>
           <h1 className="w-96 text-xs text-orange-300 ">{el.title}</h1>
           <h5 className="text text-white">{dataFormating(el.created_at)}</h5>
         </div>
